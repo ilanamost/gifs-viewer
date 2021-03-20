@@ -1,5 +1,6 @@
 
-Gifs viewer 
+# gifs-viewer
+An application to view and search for gifs.
 
 Instructions:
 1. Download the source code.
