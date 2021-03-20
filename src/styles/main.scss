@@ -1,0 +1,16 @@
+/*-------Main---------*/
+
+@import './base.scss';
+@import './helpers.scss';
+@import './fonts.scss';
+@import './breakpoints.scss';
+@import './colors.scss';
+
+body{
+    background-image: url("../public/img/background.jpg");  
+    background-size: cover;  
+    background-repeat: no-repeat;
+    background-attachment: fixed;  
+ } 
+
+ 
