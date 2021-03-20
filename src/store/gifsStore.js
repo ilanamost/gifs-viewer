@@ -8,6 +8,9 @@ export default {
     mutations: {
         saveGifSearch(state, { searchTerm }) {
            state.searchedGifs.push(searchTerm);
+        },
+        clearGifs(state, { searchedGifs }) {
+           state.searchedGifs = searchedGifs;
         }
     },
     actions: {
@@ -17,6 +20,10 @@ export default {
             }).catch((error) => {
                 console.log('error', error);
             });
+        },
+        clearGifs(store) {
+            const searchedGifs = [];
+            store.commit({ type: "clearGifs",  searchedGifs});
         }
     },
     getters: {

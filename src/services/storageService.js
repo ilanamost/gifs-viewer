@@ -1,6 +1,8 @@
 // store value in localStorage
 const store = ((key, val) => {
-    localStorage.setItem(key, val);
+    if (!localStorage[key]) {
+        localStorage[key] = JSON.stringify(val);
+    }
 })
 
 // store value in localStorage in array
@@ -25,7 +27,8 @@ const storeInArray = ((key, val, maxLength) => {
 
 // load value from localStorage
 const load = ((key) => {
-    return localStorage.getItem(key);
+    let str = localStorage[key] || null;
+    return JSON.parse(str);
 })
 
 // delete item from localStorage

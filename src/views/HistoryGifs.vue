@@ -23,7 +23,7 @@ export default {
   methods: {
     navigateToMainPage(item) {
       this.$router.replace({ name: "main", params: { searchedItem: item } });
-    },
+    }
   },
   computed: {
     lastUserSearches() {

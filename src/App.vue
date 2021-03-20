@@ -13,7 +13,6 @@
 </template>
 
 <script>
-import StorageService from "@/services/storageService.js";
 import HttpService from "@/services/httpService.js";
 
 export default {
@@ -27,6 +26,8 @@ export default {
       this.$store
         .dispatch({ type: "logout" })
         .then(() => {
+          this.$store.dispatch({ type: "clearGifs" });
+          this.$store.dispatch({ type: "clearAuthStatus" });
           // navigate to the login page
           this.$router.replace("/login");
         })

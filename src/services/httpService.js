@@ -112,9 +112,9 @@ const setAuthTimer = ((duration) => {
  * @param {Date}              expirationDate        The token's expiration date
  */
 const _saveAuthData = ((token, expirationDate) => {
-    StorageService.store('token', token);
+    localStorage.setItem('token', token);
     // save the expiration date in ISO format: 2011-10-05T14:48:00.000Z
-    StorageService.store('expiration', expirationDate.toISOString());
+    localStorage.setItem('expiration', expirationDate.toISOString());
 });
 
 
@@ -173,8 +173,8 @@ const autoAuthUser = (() => {
 */
 const getAuthData = (() => {
     // get the authentication data from the localStorage
-    const token = StorageService.load('token');
-    const expirationDate = StorageService.load('expiration');
+    const token = localStorage.getItem('token');
+    const expirationDate = localStorage.getItem('expiration');
 
     // if there is no token or expiration date, 
     // return from the function

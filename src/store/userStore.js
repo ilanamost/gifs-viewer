@@ -42,6 +42,10 @@ export default {
                 reject(false);
               });
             });
+        },
+        clearAuthStatus(store) {
+            const isAuthenticated = false;
+            store.commit({type: "setAuthStatus", isAuthenticated});
         }
     },
     getters: {
