@@ -77,7 +77,6 @@ export default {
         email: "",
         password: "",
       },
-      isUserAuthenticated: false,
       existingUser: true,
       errors: { userName: [], email: [], password: [] },
     };
@@ -104,12 +103,10 @@ export default {
         this.errors.password.push("Password is required.");
       }
 
-      if (
-        this.authForm.password &&
-        !PASSWORD_VALIDATOR.test(this.authForm.password)
-      ) {
+      if (this.authForm.password &&
+        !PASSWORD_VALIDATOR.test(this.authForm.password)) {
         this.errors.password.push(
-          "The password should contain at least 8 characters at least one capital letter, at least one number and at least one lowercase letter."
+          "The password should contain at least 8 characters, at least one capital letter, at least one number and at least one lowercase letter."
         );
       }
 
@@ -149,7 +146,7 @@ export default {
         this.authForm.password
       )
         .then((res) => {
-          this.$router.replace("/");
+          this.loginUser();
         })
         .catch((error) => {
           console.log("error", error);
