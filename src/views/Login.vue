@@ -60,16 +60,21 @@
       <input type="checkbox" @change="switchFormType($event)" checked/>
       <span class="checkbox-text"> already existing user? </span>
     </div>
+
+    <Loader v-if="isLoading" />
   </div>
 </template>
 
 <script>
 import HttpService from "@/services/httpService.js";
-import { PASSWORD_VALIDATOR, EMAIL_VALIDATOR } from "@/services/utilService.js";
+import { PASSWORD_VALIDATOR, EMAIL_VALIDATOR, LOADER_TIMEOUT } from "@/services/utilService.js";
+import Loader from "@/components/Loader";
 
 export default {
   name: "Login",
-  components: {},
+  components: {
+    Loader
+  },
   data() {
     return {
       authForm: {
@@ -79,12 +84,12 @@ export default {
       },
       existingUser: true,
       errors: { userName: [], email: [], password: [] },
+      isLoading: false
     };
   },
 
   methods: {
     allEmpty(obj) {
-
       // if all the object keys are empty arrays, return true
       return Object.keys(obj).every((key) => {
         return obj[key].length === 0;
@@ -103,22 +108,19 @@ export default {
       return this.allEmpty(this.errors) ? true : false;
     },
     validateUserName() {
-      // if there is no value in the user name control 
+      // if there is no value in the user name control
       // and the user is NOT an existing user of the application
       if (!this.existingUser && !this.authForm.userName) {
-
         // add error for the user name control
         this.errors.userName.push("User name is required.");
       }
     },
     validatePassword() {
-      // if there is no value in the password control 
+      // if there is no value in the password control
       if (!this.authForm.password) {
-
         // add error for the password control
         this.errors.password.push("Password is required.");
       } else if (!PASSWORD_VALIDATOR.test(this.authForm.password)) {
-
         // if there is value but it's NOT valid, add error for the password control
         this.errors.password.push(
           "The password is not valid: it should contain at least 8 characters, at least one capital letter, at least one number and at least one lowercase letter."
@@ -126,15 +128,15 @@ export default {
       }
     },
     validateEmail() {
-      // if there is no value in the email control 
+      // if there is no value in the email control
       if (!this.authForm.email) {
-
         // add error for the email control
         this.errors.email.push("Email is required.");
       } else if (!EMAIL_VALIDATOR.test(this.authForm.email)) {
-
         // if there is value but it's NOT valid, add error for the email control
-        this.errors.email.push("The email is not valid: It can contain any characters devided by a '@' and a '.' afterwards");
+        this.errors.email.push(
+          "The email is not valid: It can contain any characters devided by a '@' and a '.' afterwards"
+        );
       }
     },
     loginUser() {
@@ -149,10 +151,21 @@ export default {
       const email = this.authForm.email;
       const password = this.authForm.password;
 
+      // display loader
+      this.isLoading = true;
+
       // dispatch an action to login the user
       this.$store
         .dispatch({ type: "login", email, password })
         .then(() => {
+          setTimeout(
+            // hide the loader after getting the result
+            // and waiting for a given amount of time
+            () => {
+              this.isLoading = false;
+            },
+            LOADER_TIMEOUT
+          );
 
           // navigate to the main page of the application
           this.$router.replace("/");
@@ -170,15 +183,18 @@ export default {
         return;
       }
 
+      // display loader
+      this.isLoading = true;
+
       // signup the user with the form data
       HttpService.signup(
         this.authForm.userName,
         this.authForm.email,
-        this.authForm.password)  
+        this.authForm.password
+      )
         // the signup was successfull
         .then((res) => {
-
-          // login the user 
+          // login the user
           this.loginUser();
         })
         .catch((error) => {
@@ -297,5 +313,9 @@ export default {
   .login-container {
     width: 85%;
   }
+}
+
+:ng-deep .loader-container {
+  padding-top: 30%;
 }
 </style>
