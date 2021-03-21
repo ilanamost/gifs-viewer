@@ -12,9 +12,8 @@ const storeInArray = ((key, val, maxLength) => {
 
         if (!localStorage[key]) {
             // convert the value to a string, 
-            // put it in an array 
             // and save in the localStorage under the given key
-            localStorage[key] = [JSON.stringify(val)];
+            localStorage[key] = JSON.stringify(val);
             resolve(true);
         } else {
             let storedData = load(key);
@@ -32,8 +31,8 @@ const storeInArray = ((key, val, maxLength) => {
                 // add the given value to the data array
                 storedData.push(val);
 
-                // store the updated data in the localStorage ,as a string, in an array under the given key
-                localStorage[key] = [JSON.stringify(storedData)];
+                // store the updated data in the localStorage ,as a string, under the given key
+                localStorage[key] = JSON.stringify(storedData);
                 resolve(true);
             }
         }
