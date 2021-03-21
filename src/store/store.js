@@ -17,5 +17,3 @@ export const store = createStore({
     gifsStore
   }
 })
-
-

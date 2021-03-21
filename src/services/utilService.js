@@ -30,4 +30,3 @@ const moveToRoute = next => {
 export default {
   moveToRoute
 }
-
