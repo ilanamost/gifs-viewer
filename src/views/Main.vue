@@ -28,7 +28,7 @@
           type="button"
           @click="fetchNextGifs"
           class="btn btn-sucess"
-          :disabled="gifsOffset === gifsTotalCount - 1"
+          :disabled="gifsOffset === gifsTotalCount - 1 || gifsTotalCount === 0"
         >
           Next
         </button>
