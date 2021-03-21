@@ -173,8 +173,8 @@ const autoAuthUser = (() => {
 */
 const getAuthData = (() => {
     // get the authentication data from the localStorage
-    const token = localStorage.getItem(TOKEN_KEY);
-    const expirationDate = localStorage.getItem(EXPIRATION_KEY);
+    const token = StorageService.load(TOKEN_KEY);
+    const expirationDate = StorageService.load(EXPIRATION_KEY);
 
     // if there is no token or expiration date, 
     // return from the function
