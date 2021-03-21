@@ -20,8 +20,8 @@ export default {
   width: 55%;
   height: 30vh;
   border-radius: 50%;
-  border: 10px solid #00000012;
-  box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
+  border: 10px solid $gifItemBorderColor;
+  box-shadow: 10px 10px 5px 0px $gifItemBoxShadow;
 
   &:hover {
     transform: scale(1.1);

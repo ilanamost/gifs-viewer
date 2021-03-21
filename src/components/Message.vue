@@ -53,10 +53,10 @@ export default {
   }
 
   .modal-content {
-    background-color: #fefefe;
+    background-color: $modalBackgroundColor;
     margin: auto;
     padding: 20px;
-    border: 1px solid #888;
+    border: 1px solid $modalBorderColor;
     width: 80%;
     font-size: calc(16px + 1vw);
     border-radius: 40px;

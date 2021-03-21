@@ -1,3 +1,13 @@
 module.exports = {
-  lintOnSave: false
+  lintOnSave: false,
+  css: {
+    loaderOptions: {
+      sass: {
+        data: `
+          @import "@/styles/colors.scss";
+          @import "@/styles/breakpoints.scss";
+        `
+      }
+    }
+  }
 };
