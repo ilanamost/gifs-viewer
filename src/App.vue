@@ -4,7 +4,9 @@
     <router-link to="/gifs-history" v-if="isUserAuthenticated">
       History
     </router-link>
-    <router-link to="/login" v-if="!isUserAuthenticated"> Login / Signup </router-link>
+    <router-link to="/login" v-if="!isUserAuthenticated">
+      Login / Signup
+    </router-link>
     <router-link to="/login" @click="onLogout" v-if="isUserAuthenticated">
       Logout
     </router-link>
@@ -22,10 +24,11 @@ export default {
     HttpService.autoAuthUser();
 
     // only if the user is authenticated
-    if(HttpService.getIsAuth())
-
-    // dispatch an action to the store to change his authentication status to true 
-    this.$store.dispatch({ type: "autoAuthUser" });
+    if (HttpService.getIsAuth()) {
+      
+      // dispatch an action to the store to change his authentication status to true
+      this.$store.dispatch({ type: "autoAuthUser" });
+    }
   },
   methods: {
     onLogout() {
