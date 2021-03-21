@@ -179,7 +179,7 @@ export default {
   .search-input {
     width: 80%;
     padding: 12px;
-    border: 1px solid #ccc;
+    border: 1px solid $searchInputBorderColor;
     border-radius: 4px;
     font-size: 16px;
     margin: 0 auto;
@@ -187,7 +187,7 @@ export default {
   }
 
   .page-number {
-    background-color: #8a2be287;
+    background-color: $pageNumberBackgroundColor;
     width: 80%;
     margin: 0 auto;
     padding: 1vw;

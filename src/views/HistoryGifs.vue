@@ -12,7 +12,7 @@
     </ul>
 
     <div v-if="lastUserSearches.length === 0" class="message">
-      <p>There are currently no search items to display</p>
+      <p> There are currently no search items to display </p>
     </div>
   </div>
 </template>
@@ -57,9 +57,9 @@ export default {
   }
 
   .list-item {
-    border: solid 1px white;
+    border: solid 1px $historyItemBorderColor;
     padding: 5px;
-    background-color: #8a2be254;
+    background-color: $historyItemBackgroundColor;
     width: 80%;
     margin: 2vh auto;
     border-radius: 15px;
@@ -69,7 +69,7 @@ export default {
 
     &:hover {
       cursor: pointer;
-      background-color: #8a2be287;
+      background-color: $historyItemHoverBackgroundColor;
       transform: scale(1.1);
       transition: all 0.5s;
     }
@@ -78,10 +78,10 @@ export default {
 
 .message {
   padding: 1vw;
-  background-color: #a970e28f;
+  background-color: $historyMessageBackgroundColor;
   width: 80%;
   margin: 0 auto;
   border-radius: 10px;
-  border: 2px solid #000000;
+  border: 2px solid $historyMessageBorderColor;
 }
 </style>
