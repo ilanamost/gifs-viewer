@@ -5,7 +5,6 @@ module.exports = {
       sass: {
         data: `
           @import "@/styles/colors.scss";
-          @import "@/styles/breakpoints.scss";
         `
       }
     }
