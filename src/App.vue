@@ -18,7 +18,13 @@ import HttpService from "@/services/httpService.js";
 export default {
   name: "App",
   created() {
+    // check if the user should be authenticated again
     HttpService.autoAuthUser();
+
+    // only if the user is authenticated
+    if(HttpService.getIsAuth())
+
+    // dispatch an action to the store to change his authentication status to true 
     this.$store.dispatch({ type: "autoAuthUser" });
   },
   methods: {
