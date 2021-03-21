@@ -315,7 +315,7 @@ export default {
   }
 }
 
-:ng-deep .loader-container {
+.loader-container {
   padding-top: 30%;
 }
 </style>
