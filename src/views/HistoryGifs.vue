@@ -22,11 +22,13 @@ export default {
   name: "HistoryGifs",
   methods: {
     navigateToMainPage(item) {
+      // navigate to the main page route with the search term as parameter
       this.$router.replace({ name: "main", params: { searchedItem: item } });
     }
   },
   computed: {
     lastUserSearches() {
+      // get the value of the recent user searches from the store
       return this.$store.getters.lastUserSearches;
     }
   }

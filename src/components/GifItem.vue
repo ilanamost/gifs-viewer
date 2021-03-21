@@ -10,7 +10,7 @@ export default {
   name: "GifItem",
   props: {
     gif: String
-  },
+  }
 };
 </script>
 

@@ -8,15 +8,31 @@ const store = ((key, val) => {
 // store value in localStorage in array
 const storeInArray = ((key, val, maxLength) => {
     return new Promise((resolve, reject) => {
+        // if the localStorage doesn't have value under the given key
+
         if (!localStorage[key]) {
+            // convert the value to a string, 
+            // put it in an array 
+            // and save in the localStorage under the given key
             localStorage[key] = [JSON.stringify(val)];
             resolve(true);
         } else {
             let storedData = load(key);
+
+            // if the localStorage has a value under the given key
+            // and it is an array, return it as it is, 
+            // otherwise put it inside an array
             storedData = (Array.isArray(storedData)) ? storedData : [storedData];
+
+            // if the array length is under the maximal allowed value,
+            // and the given value doesn't exist in the array
             if (storedData.length < maxLength &&
                 storedData.indexOf(val) === -1) {
+
+                // add the given value to the data array
                 storedData.push(val);
+
+                // store the updated data in the localStorage ,as a string, in an array under the given key
                 localStorage[key] = [JSON.stringify(storedData)];
                 resolve(true);
             }

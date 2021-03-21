@@ -28,6 +28,7 @@ export default {
   components: {},
   methods: {
     closeModal() {
+      // notify the parent component to close the message modal
       this.$emit("closeModal");
     },
   },
