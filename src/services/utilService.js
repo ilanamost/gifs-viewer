@@ -8,6 +8,8 @@ export const SEARCHES_KEY = "searches_key";
 export const MAX_LENGTH = 10;
 export const API_KEY = "k6NkccErMkT4yZyDItzzYusqjYvk7bDi";
 export const GIPHY_API_URL = "https://api.giphy.com/v1/gifs/";
+export const TOKEN_KEY = "token";
+export const EXPIRATION_KEY = "expiration";
 
 /**
 * Move the user the a different route

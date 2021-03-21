@@ -14,7 +14,7 @@ let isAuthenticated = false;
 let token = '';
 let tokenTimer = null;
 const axios = require("axios");
-import { NUMBER_OF_MILISECONDS_IN_SECOND } from "@/services/utilService.js";
+import { NUMBER_OF_MILISECONDS_IN_SECOND, EXPIRATION_KEY, TOKEN_KEY } from "@/services/utilService.js";
 import StorageService from "@/services/storageService.js";
 
 // Getters //
@@ -112,9 +112,9 @@ const setAuthTimer = ((duration) => {
  * @param {Date}              expirationDate        The token's expiration date
  */
 const _saveAuthData = ((token, expirationDate) => {
-    localStorage.setItem('token', token);
+    StorageService.store(TOKEN_KEY, token);
     // save the expiration date in ISO format: 2011-10-05T14:48:00.000Z
-    localStorage.setItem('expiration', expirationDate.toISOString());
+    StorageService.store(EXPIRATION_KEY, expirationDate.toISOString());
 });
 
 
@@ -173,8 +173,8 @@ const autoAuthUser = (() => {
 */
 const getAuthData = (() => {
     // get the authentication data from the localStorage
-    const token = localStorage.getItem('token');
-    const expirationDate = localStorage.getItem('expiration');
+    const token = localStorage.getItem(TOKEN_KEY);
+    const expirationDate = localStorage.getItem(EXPIRATION_KEY);
 
     // if there is no token or expiration date, 
     // return from the function
