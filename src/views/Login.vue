@@ -205,17 +205,17 @@ export default {
   font-family: "Open Sans Condensed", arial, sans;
   width: 500px;
   padding: 30px;
-  background: #ffffff;
+  background: $loginBackgroundColor;
   margin: 50px auto;
-  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.22);
+  box-shadow: 0px 0px 15px $loginBoxShadowColor;
   border-radius: 15px;
 }
 
 .login-container h2 {
-  background: #4d4d4d;
+  background: $loginTitleBackgroundColor;
   text-transform: uppercase;
   font-family: "Open Sans Condensed", sans-serif;
-  color: #797979;
+  color: $loginTitleColor;
   font-size: 18px;
   font-weight: 100;
   padding: 20px;
@@ -241,7 +241,7 @@ export default {
   width: 100%;
   padding: 7px;
   border: none;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid $loginControlBorderColor;
   background: transparent;
   margin-bottom: 10px;
   font: 14px sweetCheeks, Helvetica, sans-serif;
@@ -255,14 +255,14 @@ export default {
 
 .login-container input[type="button"],
 .login-container input[type="submit"] {
-  -moz-box-shadow: inset 0px 1px 0px 0px #45d6d6;
-  -webkit-box-shadow: inset 0px 1px 0px 0px #45d6d6;
-  box-shadow: inset 0px 1px 0px 0px #45d6d6;
-  background-color: #2cbbbb;
-  border: 1px solid #27a0a0;
+  -moz-box-shadow: inset 0px 1px 0px 0px $loginButtonBoxShadowColor;
+  -webkit-box-shadow: inset 0px 1px 0px 0px $loginButtonBoxShadowColor;
+  box-shadow: inset 0px 1px 0px 0px $loginButtonBoxShadowColor;
+  background-color: $loginButtonBackgroundColor;
+  border: 1px solid $loginButtonBorderColor;
   display: inline-block;
   cursor: pointer;
-  color: #ffffff;
+  color: $loginBackgroundColor;
   padding: 8px 18px;
   text-decoration: none;
   text-transform: uppercase;
@@ -273,8 +273,7 @@ export default {
 
 .login-container input[type="button"]:hover,
 .login-container input[type="submit"]:hover {
-  background: linear-gradient(to bottom, #34caca 5%, #30c9c9 100%);
-  background-color: #34caca;
+  background-color: $loginButtonHoverBackgroundColor;
 }
 
 .checkbox-container {
@@ -290,7 +289,7 @@ export default {
 
 .error {
   font: 12px sweetCheeks, Helvetica, sans-serif;
-  color: #f87171;
+  color: $loginErrorColor;
 }
 
 @media (max-width: 580px) {

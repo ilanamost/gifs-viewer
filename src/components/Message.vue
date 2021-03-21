@@ -45,8 +45,7 @@ export default {
   width: 100%;
   height: 100%;
   overflow: auto;
-  background-color: rgb(0, 0, 0);
-  background-color: rgba(0, 0, 0, 0.4);
+  background-color: $historyMessageContainerBackgroundColor;
 
   @media (max-width: 1200px) {
      padding-top: 15vh;
