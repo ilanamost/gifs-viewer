@@ -84,11 +84,14 @@ export default {
 
   methods: {
     allEmpty(obj) {
+
+      // if all the object keys are empty arrays, return true
       return Object.keys(obj).every((key) => {
         return obj[key].length === 0;
       });
     },
     checkForm() {
+      // reset the form errors
       this.errors = { userName: [], email: [], password: [] };
 
       // validate the form controls
@@ -96,34 +99,49 @@ export default {
       this.validateEmail();
       this.validatePassword();
 
+      // if the errors object is empty in all the keys, return true
       return this.allEmpty(this.errors) ? true : false;
     },
     validateUserName() {
+      // if there is no value in the user name control 
+      // and the user is not an existing user of the application
       if (!this.existingUser && !this.authForm.userName) {
+
+        // add error for the user name control
         this.errors.userName.push("User name is required.");
       }
     },
     validatePassword() {
+      // if there is no value in the password control 
       if (!this.authForm.password) {
+
+        // add error for the password control
         this.errors.password.push("Password is required.");
       } else if (!PASSWORD_VALIDATOR.test(this.authForm.password)) {
 
+        // if there is value but it's not valid, add error for the password control
         this.errors.password.push(
           "The password is not valid: it should contain at least 8 characters, at least one capital letter, at least one number and at least one lowercase letter."
         );
       }
     },
     validateEmail() {
+      // if there is no value in the email control 
       if (!this.authForm.email) {
+
+        // add error for the email control
         this.errors.email.push("Email is required.");
       } else if (!EMAIL_VALIDATOR.test(this.authForm.email)) {
 
+        // if there is value but it's not valid, add error for the email control
         this.errors.email.push("The email is not valid: It can contain any characters devided by a '@' and a '.' afterwards");
       }
     },
     loginUser() {
+      // check if the form has is valid (has no errors)
       const isFormValid = this.checkForm();
 
+      // if it is not valid, return from the function
       if (!isFormValid) {
         return;
       }
@@ -131,9 +149,12 @@ export default {
       const email = this.authForm.email;
       const password = this.authForm.password;
 
+      // dispatch an action to login the user
       this.$store
         .dispatch({ type: "login", email, password })
         .then(() => {
+
+          // navigate to the main page of the application
           this.$router.replace("/");
         })
         .catch((error) => {
@@ -141,18 +162,23 @@ export default {
         });
     },
     signupUser() {
+      // check if the form has is valid (has no errors)
       const isFormValid = this.checkForm();
 
+      // if it is not valid, return from the function
       if (!isFormValid) {
         return;
       }
 
+      // signup the user with the form data
       HttpService.signup(
         this.authForm.userName,
         this.authForm.email,
-        this.authForm.password
-      )
+        this.authForm.password)  
+        // the signup was successfull
         .then((res) => {
+
+          // login the user 
           this.loginUser();
         })
         .catch((error) => {
@@ -160,8 +186,14 @@ export default {
         });
     },
     switchFormType(event) {
+      // check whether the checkbox is checked or not
       const isCheckboxChecked = event.target.checked;
+
+      // according to it, decide if the user is an existing user in an application or a new one
+      // use this to switch between login and signup forms display
       this.existingUser = isCheckboxChecked ? true : false;
+
+      // reset the form errors
       this.errors = { userName: [], email: [], password: [] };
     },
   },
