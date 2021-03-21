@@ -10,7 +10,7 @@ export const API_KEY = "k6NkccErMkT4yZyDItzzYusqjYvk7bDi";
 export const GIPHY_API_URL = "https://api.giphy.com/v1/gifs/";
 export const TOKEN_KEY = "token";
 export const EXPIRATION_KEY = "expiration";
-export const LOADER_TIMEOUT = 1000;
+export const LOADER_TIMEOUT = 500;
 
 /**
 * Move the user the a different route
