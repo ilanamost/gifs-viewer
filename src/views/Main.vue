@@ -43,6 +43,7 @@
 <script>
 import GifsList from "../components/GifsList";
 import Message from "../components/Message";
+import { API_KEY, MAX_LENGTH, GIPHY_API_URL } from "@/services/utilService.js";
 const axios = require("axios");
 
 export default {
@@ -85,9 +86,7 @@ export default {
     },
     async fetchGifs() {
       try {
-        const API_KEY = "k6NkccErMkT4yZyDItzzYusqjYvk7bDi";
-        const GIFS_PER_PAGE = 10;
-        const url = `https://api.giphy.com/v1/gifs/search?q=${this.searchTerm}&api_key=${API_KEY}&limit=${GIFS_PER_PAGE}&offset=${this.gifsOffset}`;
+        const url = `${GIPHY_API_URL}search?q=${this.searchTerm}&api_key=${API_KEY}&limit=${MAX_LENGTH}&offset=${this.gifsOffset}`;
         const response = await axios.get(url);
 
         this.gifsTotalCount =

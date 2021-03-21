@@ -6,6 +6,8 @@ export const EMAIL_VALIDATOR = /\S+@\S+\.\S+/;
 export const NUMBER_OF_MILISECONDS_IN_SECOND = 1000;
 export const SEARCHES_KEY = "searches_key";
 export const MAX_LENGTH = 10;
+export const API_KEY = "k6NkccErMkT4yZyDItzzYusqjYvk7bDi";
+export const GIPHY_API_URL = "https://api.giphy.com/v1/gifs/";
 
 /**
 * Move the user the a different route
