@@ -290,6 +290,7 @@ export default {
 .error {
   font: 12px sweetCheeks, Helvetica, sans-serif;
   color: $loginErrorColor;
+  text-align: start;
 }
 
 @media (max-width: 580px) {
