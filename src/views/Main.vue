@@ -4,6 +4,7 @@
       <input
         type="text"
         v-model="searchTerm"
+        @input="disableButtons"
         @paste="resetData"
         class="search-input"
       />
@@ -26,7 +27,7 @@
           type="button"
           @click="fetchPrevGifs"
           class="btn"
-          :disabled="gifsOffset === 0"
+          :disabled="gifsOffset === 0 || disablePaginationButtons"
         >
           Previous
         </button>
@@ -35,7 +36,7 @@
           type="button"
           @click="fetchNextGifs"
           class="btn btn-sucess"
-          :disabled="gifsOffset === gifsTotalCount - 1 || gifsTotalCount === 0"
+          :disabled="gifsOffset === gifsTotalCount - 1 || gifsTotalCount === 0 || disablePaginationButtons"
         >
           Next
         </button>
@@ -74,7 +75,8 @@ export default {
       gifsOffset: 0,
       gifsTotalCount: 0,
       displayMessage: false,
-      isLoading: false
+      isLoading: false,
+      disablePaginationButtons: false
     };
   },
   created() {
@@ -91,6 +93,9 @@ export default {
     }
   },
   methods: {
+    disableButtons() {
+      this.disablePaginationButtons = true;
+    },
     closeModal() {
       this.displayMessage = false;
     },
@@ -113,6 +118,8 @@ export default {
       }
     },
     async fetchGifs() {
+      this.disablePaginationButtons = false;
+
       try {
         const url = `${GIPHY_API_URL}search?q=${this.searchTerm}&api_key=${API_KEY}&limit=${MAX_LENGTH}&offset=${this.gifsOffset}`;
 
@@ -159,11 +166,11 @@ export default {
     buildGifs(json) {
       // if there is no data in the response,
       // there is a search term
-      // and the giffs offset is under the total gifs count
+      // and the giffs offset is under the total gifs count or there is no gifsOffset
       if (
         json.data.length === 0 &&
         this.searchTerm &&
-        this.gifsOffset <= this.gifsTotalCount
+        ((this.gifsOffset <= this.gifsTotalCount) || (!this.gifsOffset))
       ) {
         // display error message
         this.displayMessage = true;
