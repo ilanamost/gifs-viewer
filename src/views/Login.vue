@@ -109,7 +109,7 @@ export default {
       } else if (!PASSWORD_VALIDATOR.test(this.authForm.password)) {
 
         this.errors.password.push(
-          "The password should contain at least 8 characters, at least one capital letter, at least one number and at least one lowercase letter."
+          "The password is not valid: it should contain at least 8 characters, at least one capital letter, at least one number and at least one lowercase letter."
         );
       }
     },
@@ -118,7 +118,7 @@ export default {
         this.errors.email.push("Email is required.");
       } else if (!EMAIL_VALIDATOR.test(this.authForm.email)) {
 
-        this.errors.email.push("The email is not valid.");
+        this.errors.email.push("The email is not valid: It can contain any characters devided by a '@' and a '.' afterwards");
       }
     },
     loginUser() {

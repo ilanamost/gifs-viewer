@@ -94,8 +94,8 @@ export default {
           response.data &&
           response.data.pagination &&
           response.data.pagination.total_count
-            ? response.data.pagination.total_count
-            : 0;
+          ? response.data.pagination.total_count
+          : 0;
 
         this.buildGifs(response.data);
         this.saveLastSearch();
@@ -115,8 +115,7 @@ export default {
       if (
         json.data.length === 0 &&
         this.searchTerm &&
-        this.gifsOffset <= this.gifsTotalCount
-      ) {
+        this.gifsOffset <= this.gifsTotalCount) {
         this.displayMessage = true;
       }
 

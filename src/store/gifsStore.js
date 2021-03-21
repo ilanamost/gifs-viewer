@@ -17,9 +17,7 @@ export default {
         saveGifSearch(store, { searchTerm }) {
             StorageService.storeInArray(SEARCHES_KEY, searchTerm, MAX_LENGTH).then((res) => {
                 store.commit({ type: "saveGifSearch", searchTerm });
-            }).catch((error) => {
-                console.log('error', error);
-            });
+            }).catch((error) => {});
         },
         clearGifs(store) {
             const searchedGifs = [];
