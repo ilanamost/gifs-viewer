@@ -1,9 +1,19 @@
-@keyframes spin {
-    0% {
-        transform: rotate(0deg);
+@keyframes bounce {
+    0%,
+    50%,
+    100% {
+        transform: scale(1);
+        filter: blur(0px);
     }
 
-    100% {
-        transform: rotate(360deg);
+    25% {
+        transform: scale(0.6);
+        filter: blur(3px);
+    }
+
+    75% {
+        filter: blur(3px);
+        transform: scale(1.4);
     }
 }
+

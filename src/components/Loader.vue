@@ -1,6 +1,9 @@
 <template>
   <div class="loader-container flex justify-center align-center">
-    <div class="loader"></div>
+    <div class="bubble bubble-1"></div>
+    <div class="bubble bubble-2"></div>
+    <div class="bubble bubble-3"></div>
+    <div class="bubble bubble-4"></div>
   </div>
 </template>
 
@@ -23,14 +26,35 @@ export default {
   height: 100%;
   overflow: auto;
   background-color: $historyMessageContainerBackgroundColor;
+}
 
-  .loader {
-    border: 16px solid #f3f3f3;
-    border-top: 16px solid #3498db;
-    border-radius: 50%;
-    width: 120px;
-    height: 120px;
-    animation: spin 2s linear infinite;
+div.loader-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.loader-container > .bubble {
+  width: 3vw;
+  height: 3vw;
+  border-radius: 100%;
+  margin: 2vw;
+  background-image: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.5) 0%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  animation: bounce 1.5s 0.5s linear infinite;
+
+  &.bubble-2 {
+    animation-delay: 0.1s;
+  }
+
+  &.bubble-3 {
+    animation-delay: 0.2s;
+  }
+
+  &.bubble-4 {
+    animation-delay: 0.3s;
   }
 }
 </style>
