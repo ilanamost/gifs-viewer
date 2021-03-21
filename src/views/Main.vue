@@ -166,14 +166,16 @@ export default {
     buildGifs(json) {
       // if there is no data in the response,
       // there is a search term
-      // and the giffs offset is under the total gifs count or there is no gifsOffset
+      // and the giffs offset is under the total gifs count or the total gifs count is zero
       if (
         json.data.length === 0 &&
         this.searchTerm &&
-        ((this.gifsOffset <= this.gifsTotalCount) || (!this.gifsOffset))
+        ((this.gifsOffset <= this.gifsTotalCount) || (!this.gifsTotalCount))
       ) {
         // display error message
         this.displayMessage = true;
+
+        this.disablePaginationButtons = true;
       }
 
       // map the gifs data to an array of the gifs sources
