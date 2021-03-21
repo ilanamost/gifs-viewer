@@ -48,7 +48,7 @@ export default {
 @import "./styles/main.scss";
 #app {
   text-align: center;
-  color: #2c3e50;
+  color: $appFontColor;
   height: 100%;
   font-family: cursive;
 }

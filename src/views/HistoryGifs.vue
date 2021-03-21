@@ -69,7 +69,7 @@ export default {
 
     &:hover {
       cursor: pointer;
-      background-color: $historyItemHoverBackgroundColor;
+      background-color: $navbarBackgroundColor;
       transform: scale(1.1);
       transition: all 0.5s;
     }

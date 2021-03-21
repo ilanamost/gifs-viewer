@@ -187,7 +187,7 @@ export default {
   }
 
   .page-number {
-    background-color: $pageNumberBackgroundColor;
+    background-color: $navbarBackgroundColor;
     width: 80%;
     margin: 0 auto;
     padding: 1vw;
