@@ -140,15 +140,17 @@ export default {
 
         // display error message 
         this.displayMessage = true;
-        return;
       }
 
       // map the gifs data to an array of the gifs sources
-      this.gifs = json.data
+      this.gifs = 
+      json.data.length > 0 
+      ? json.data
         .map((gif) => gif.id)
         .map((gifId) => {
           return `https://media.giphy.com/media/${gifId}/giphy.gif`;
-        });
+        }) 
+      : [];
     },
     resetData() {
       // reset all the page data
