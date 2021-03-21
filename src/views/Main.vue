@@ -87,7 +87,7 @@ export default {
       try {
         const API_KEY = "k6NkccErMkT4yZyDItzzYusqjYvk7bDi";
         const GIFS_PER_PAGE = 10;
-        const url = `http://api.giphy.com/v1/gifs/search?q=${this.searchTerm}&api_key=${API_KEY}&limit=${GIFS_PER_PAGE}&offset=${this.gifsOffset}`;
+        const url = `https://api.giphy.com/v1/gifs/search?q=${this.searchTerm}&api_key=${API_KEY}&limit=${GIFS_PER_PAGE}&offset=${this.gifsOffset}`;
         const response = await axios.get(url);
 
         this.gifsTotalCount =
