@@ -2,6 +2,7 @@ import HttpService from "@/services/httpService.js";
 
 export default {
     state: {
+        // get the users' authentication status from the http service
         isAuthenticated: HttpService.getIsAuth()
     },
     mutations: {
@@ -59,7 +60,6 @@ export default {
     getters: {
         userAuthStatus(state) {
             // return the users' authentication status 
-            // according to the stores' state value
             return state.isAuthenticated;
         }
     }
