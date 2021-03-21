@@ -10,8 +10,8 @@
         class="search-input"
       />
 
-      <p class="page-number" v-if="gifsOffset >= 0">
-        Page Number: {{ gifsOffset + 1 }}
+      <p class="page-number" v-if="gifsOffset >= 0 && gifsTotalCount > 0">
+        Page Number: {{ gifsOffset + 1 }} / {{ gifsTotalCount }}
       </p>
 
       <div class="buttons-container flex space-between">
@@ -28,7 +28,7 @@
           type="button"
           @click="fetchNextGifs"
           class="btn btn-sucess"
-          :disabled="gifsOffset === gifsTotalCount"
+          :disabled="gifsOffset === gifsTotalCount - 1"
         >
           Next
         </button>
