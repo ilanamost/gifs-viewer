@@ -4,11 +4,13 @@
       <input
         type="text"
         v-model="searchTerm"
-        @input="fetchGifs"
-        @keyup.enter="fetchGifs"
         @paste="resetData"
         class="search-input"
       />
+
+      <button type="button" class="btn search-btn" @click="fetchGifs" :disabled="!searchTerm || isLoading">
+        <span class="btn-text"> Go </span>
+      </button>
 
       <p class="page-number" v-if="gifsOffset >= 0 && gifsTotalCount > 0">
         Page Number: {{ gifsOffset + 1 }} / {{ gifsTotalCount }}
@@ -58,17 +60,18 @@ export default {
       searchTerm: "",
       gifsOffset: 0,
       gifsTotalCount: 0,
-      displayMessage: false
+      displayMessage: false,
+      isLoading: false
     };
   },
   created() {
-    // if the route has a search term parameter 
-    if(this.$route.params && this.$route.params.searchedItem) {
+    // if the route has a search term parameter
+    if (this.$route.params && this.$route.params.searchedItem) {
       // save the search term
       this.searchTerm = this.$route.params.searchedItem;
 
       // reset the search term parameter in the current route
-      this.$router.replace({ name: 'main', params: { searchedItem: '' } });
+      this.$router.replace({ name: "main", params: { searchedItem: "" } });
 
       // fetch gifs from the api
       this.fetchGifs();
@@ -89,7 +92,6 @@ export default {
     },
     fetchNextGifs() {
       if (this.gifsOffset < this.gifsTotalCount) {
-
         // increment the gifs offset until the gifs total count
         this.gifsOffset++;
 
@@ -100,17 +102,21 @@ export default {
     async fetchGifs() {
       try {
         const url = `${GIPHY_API_URL}search?q=${this.searchTerm}&api_key=${API_KEY}&limit=${MAX_LENGTH}&offset=${this.gifsOffset}`;
-        
+
+        this.isLoading = true;
+
         // get the response from the giphy API
         const response = await axios.get(url);
+
+        this.isLoading = false;
 
         // save the gifs total count from the pagination data
         this.gifsTotalCount =
           response.data &&
           response.data.pagination &&
           response.data.pagination.total_count
-          ? response.data.pagination.total_count
-          : 0;
+            ? response.data.pagination.total_count
+            : 0;
 
         // map the gifs data to an array of the gifs sources
         this.buildGifs(response.data);
@@ -131,26 +137,26 @@ export default {
     },
     buildGifs(json) {
       // if there is no data in the response,
-      // there is a search term 
+      // there is a search term
       // and the giffs offset is under the total gifs count
       if (
         json.data.length === 0 &&
         this.searchTerm &&
-        this.gifsOffset <= this.gifsTotalCount) {
-
-        // display error message 
+        this.gifsOffset <= this.gifsTotalCount
+      ) {
+        // display error message
         this.displayMessage = true;
       }
 
       // map the gifs data to an array of the gifs sources
-      this.gifs = 
-      json.data.length > 0 
-      ? json.data
-        .map((gif) => gif.id)
-        .map((gifId) => {
-          return `https://media.giphy.com/media/${gifId}/giphy.gif`;
-        }) 
-      : [];
+      this.gifs =
+        json.data.length > 0
+          ? json.data
+              .map((gif) => gif.id)
+              .map((gifId) => {
+                return `https://media.giphy.com/media/${gifId}/giphy.gif`;
+              })
+          : [];
     },
     resetData() {
       // reset all the page data
@@ -159,11 +165,11 @@ export default {
       this.gifsOffset = 0;
       this.gifsTotalCount = 0;
       this.displayMessage = false;
+      this.isLoading = false;
     },
     saveLastSearch() {
       // if there is no error message and there is a searched term
-      if(!this.displayMessage && this.searchTerm) {
-
+      if (!this.displayMessage && this.searchTerm) {
         // dispatch an action to save the gif search
         const searchTerm = this.searchTerm;
         this.$store.dispatch({ type: "saveGifSearch", searchTerm });
@@ -178,35 +184,50 @@ export default {
   height: 100%;
   font-family: cursive;
 
-  .search-input {
-    width: 80%;
-    padding: 12px;
-    border: 1px solid $searchInputBorderColor;
-    border-radius: 4px;
-    font-size: 16px;
-    margin: 0 auto;
-    font-family: sweetCheeks;
-  }
-
-  .page-number {
-    background-color: $navbarBackgroundColor;
-    width: 80%;
-    margin: 0 auto;
-    padding: 1vw;
-    border-radius: 4px;
-    font-weight: bold;
-  }
-
-  .buttons-container {
-    margin: 2vh auto;
-    width: 15%;
-
-    @media (max-width: 1200px) {
-      width: 30%;
+  .controls-container {
+    .search-input {
+      width: 80%;
+      padding: 12px;
+      border: 1px solid $searchInputBorderColor;
+      border-radius: 4px;
+      font-size: 16px;
+      margin: 0 auto;
+      font-family: sweetCheeks;
     }
 
-    @media (max-width: 780px) {
-      width: 50%;
+    .search-btn {
+      width: 8%;
+      height: 46px;
+
+      .btn-text {
+        margin: -2vw;
+      }
+    }
+
+    .page-number {
+      background-color: $navbarBackgroundColor;
+      width: 88%;
+      margin: 0 auto;
+      padding: 1vw;
+      border-radius: 4px;
+      font-weight: bold;
+
+      @media (max-width: 430px) {
+        width: 91.5%;
+      }
+    }
+
+    .buttons-container {
+      margin: 2vh auto;
+      width: 15%;
+
+      @media (max-width: 1200px) {
+        width: 30%;
+      }
+
+      @media (max-width: 780px) {
+        width: 50%;
+      }
     }
   }
 }
