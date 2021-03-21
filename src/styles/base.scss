@@ -33,15 +33,15 @@ ul {
         &:hover {
             background-color: #802e2e;
         }
-        
+
     }
 
     &.btn-sucess {
         background-color: #4CAF50;
-        
-      &:hover {
-        background-color: #45a049;
-      }
+
+        &:hover {
+            background-color: #45a049;
+        }
     }
 
     &:disabled {
@@ -55,5 +55,15 @@ ul {
             color: #666666;
             cursor: not-allowed;
         }
+    }
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
     }
 }

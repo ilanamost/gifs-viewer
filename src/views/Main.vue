@@ -8,7 +8,12 @@
         class="search-input"
       />
 
-      <button type="button" class="btn search-btn" @click="fetchGifs" :disabled="!searchTerm || isLoading">
+      <button
+        type="button"
+        class="btn search-btn"
+        @click="fetchGifs"
+        :disabled="!searchTerm || isLoading"
+      >
         <span class="btn-text"> Go </span>
       </button>
 
@@ -39,13 +44,20 @@
 
     <GifsList :gifs="gifs" v-if="!displayMessage" />
     <Message v-if="displayMessage" @closeModal="closeModal" />
+    <Loader v-if="isLoading" />
   </div>
 </template>
 
 <script>
-import GifsList from "../components/GifsList";
-import Message from "../components/Message";
-import { API_KEY, MAX_LENGTH, GIPHY_API_URL } from "@/services/utilService.js";
+import GifsList from "@/components/GifsList";
+import Message from "@/components/Message";
+import Loader from "@/components/Loader";
+import {
+  API_KEY,
+  MAX_LENGTH,
+  GIPHY_API_URL,
+  LOADER_TIMEOUT,
+} from "@/services/utilService.js";
 const axios = require("axios");
 
 export default {
@@ -53,6 +65,7 @@ export default {
   components: {
     GifsList,
     Message,
+    Loader,
   },
   data() {
     return {
@@ -103,12 +116,20 @@ export default {
       try {
         const url = `${GIPHY_API_URL}search?q=${this.searchTerm}&api_key=${API_KEY}&limit=${MAX_LENGTH}&offset=${this.gifsOffset}`;
 
+        // display loader
         this.isLoading = true;
 
         // get the response from the giphy API
         const response = await axios.get(url);
 
-        this.isLoading = false;
+        setTimeout(
+          // hide the loader after getting the result
+          // and waiting for a given amount of time
+          () => {
+            this.isLoading = false;
+          },
+          LOADER_TIMEOUT
+        );
 
         // save the gifs total count from the pagination data
         this.gifsTotalCount =
