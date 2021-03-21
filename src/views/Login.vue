@@ -91,30 +91,35 @@ export default {
     checkForm() {
       this.errors = { userName: [], email: [], password: [] };
 
+      // validate the form controls
+      this.validateUserName();
+      this.validateEmail();
+      this.validatePassword();
+
+      return this.allEmpty(this.errors) ? true : false;
+    },
+    validateUserName() {
       if (!this.existingUser && !this.authForm.userName) {
         this.errors.userName.push("User name is required.");
       }
-
-      if (!this.authForm.email) {
-        this.errors.email.push("Email is required.");
-      }
-
+    },
+    validatePassword() {
       if (!this.authForm.password) {
         this.errors.password.push("Password is required.");
-      }
+      } else if (!PASSWORD_VALIDATOR.test(this.authForm.password)) {
 
-      if (this.authForm.password &&
-        !PASSWORD_VALIDATOR.test(this.authForm.password)) {
         this.errors.password.push(
           "The password should contain at least 8 characters, at least one capital letter, at least one number and at least one lowercase letter."
         );
       }
+    },
+    validateEmail() {
+      if (!this.authForm.email) {
+        this.errors.email.push("Email is required.");
+      } else if (!EMAIL_VALIDATOR.test(this.authForm.email)) {
 
-      if (this.authForm.email && !EMAIL_VALIDATOR.test(this.authForm.email)) {
         this.errors.email.push("The email is not valid.");
       }
-
-      return this.allEmpty(this.errors) ? true : false;
     },
     loginUser() {
       const isFormValid = this.checkForm();
@@ -125,13 +130,15 @@ export default {
 
       const email = this.authForm.email;
       const password = this.authForm.password;
-      
-      this.$store.dispatch({ type: "login", email, password }).then(() => {
-        this.$router.replace("/");
 
-      }).catch((error) => {
-        console.log('error', error);
-      })
+      this.$store
+        .dispatch({ type: "login", email, password })
+        .then(() => {
+          this.$router.replace("/");
+        })
+        .catch((error) => {
+          console.log("error", error);
+        });
     },
     signupUser() {
       const isFormValid = this.checkForm();
