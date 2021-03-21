@@ -9,8 +9,8 @@ export default {
         saveGifSearch(state, { searchTerm }) {
            state.searchedGifs.push(searchTerm);
         },
-        clearGifs(state, { searchedGifs }) {
-           state.searchedGifs = searchedGifs;
+        clearGifs(state) {
+           state.searchedGifs = [];
         }
     },
     actions: {
@@ -20,8 +20,7 @@ export default {
             }).catch((error) => {});
         },
         clearGifs(store) {
-            const searchedGifs = [];
-            store.commit({ type: "clearGifs",  searchedGifs});
+            store.commit({ type: "clearGifs" });
         }
     },
     getters: {

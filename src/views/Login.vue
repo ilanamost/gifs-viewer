@@ -104,7 +104,7 @@ export default {
     },
     validateUserName() {
       // if there is no value in the user name control 
-      // and the user is not an existing user of the application
+      // and the user is NOT an existing user of the application
       if (!this.existingUser && !this.authForm.userName) {
 
         // add error for the user name control
@@ -119,7 +119,7 @@ export default {
         this.errors.password.push("Password is required.");
       } else if (!PASSWORD_VALIDATOR.test(this.authForm.password)) {
 
-        // if there is value but it's not valid, add error for the password control
+        // if there is value but it's NOT valid, add error for the password control
         this.errors.password.push(
           "The password is not valid: it should contain at least 8 characters, at least one capital letter, at least one number and at least one lowercase letter."
         );
@@ -133,7 +133,7 @@ export default {
         this.errors.email.push("Email is required.");
       } else if (!EMAIL_VALIDATOR.test(this.authForm.email)) {
 
-        // if there is value but it's not valid, add error for the email control
+        // if there is value but it's NOT valid, add error for the email control
         this.errors.email.push("The email is not valid: It can contain any characters devided by a '@' and a '.' afterwards");
       }
     },
@@ -141,7 +141,7 @@ export default {
       // check if the form has is valid (has no errors)
       const isFormValid = this.checkForm();
 
-      // if it is not valid, return from the function
+      // if it is NOT valid, return from the function
       if (!isFormValid) {
         return;
       }
@@ -165,7 +165,7 @@ export default {
       // check if the form has is valid (has no errors)
       const isFormValid = this.checkForm();
 
-      // if it is not valid, return from the function
+      // if it is NOT valid, return from the function
       if (!isFormValid) {
         return;
       }
