@@ -62,9 +62,15 @@ export default {
     };
   },
   created() {
+    // if the route has a search term parameter 
     if(this.$route.params && this.$route.params.searchedItem) {
+      // save the search term
       this.searchTerm = this.$route.params.searchedItem;
+
+      // reset the search term parameter in the current route
       this.$router.replace({ name: 'main', params: { searchedItem: '' } });
+
+      // fetch gifs from the api
       this.fetchGifs();
     }
   },
@@ -74,21 +80,31 @@ export default {
     },
     fetchPrevGifs() {
       if (this.gifsOffset > 0) {
+        // decrement the gifs offset until 0
         this.gifsOffset--;
+
+        // fetch gifs from the api
         this.fetchGifs();
       }
     },
     fetchNextGifs() {
       if (this.gifsOffset < this.gifsTotalCount) {
+
+        // increment the gifs offset until the gifs total count
         this.gifsOffset++;
+
+        // fetch gifs from the api
         this.fetchGifs();
       }
     },
     async fetchGifs() {
       try {
         const url = `${GIPHY_API_URL}search?q=${this.searchTerm}&api_key=${API_KEY}&limit=${MAX_LENGTH}&offset=${this.gifsOffset}`;
+        
+        // get the response from the giphy API
         const response = await axios.get(url);
 
+        // save the gifs total count from the pagination data
         this.gifsTotalCount =
           response.data &&
           response.data.pagination &&
@@ -96,7 +112,10 @@ export default {
           ? response.data.pagination.total_count
           : 0;
 
+        // map the gifs data to an array of the gifs sources
         this.buildGifs(response.data);
+
+        // save the last searched term
         this.saveLastSearch();
       } catch (err) {
         if (err.response) {
@@ -111,13 +130,20 @@ export default {
       }
     },
     buildGifs(json) {
+      // if there is no data in the response,
+      // there is a search term 
+      // and the giffs offset is under the total gifs count
       if (
         json.data.length === 0 &&
         this.searchTerm &&
         this.gifsOffset <= this.gifsTotalCount) {
+
+        // display error message 
         this.displayMessage = true;
+        return;
       }
 
+      // map the gifs data to an array of the gifs sources
       this.gifs = json.data
         .map((gif) => gif.id)
         .map((gifId) => {
@@ -125,6 +151,7 @@ export default {
         });
     },
     resetData() {
+      // reset all the page data
       this.gifs = [];
       this.searchTerm = "";
       this.gifsOffset = 0;
@@ -132,7 +159,10 @@ export default {
       this.displayMessage = false;
     },
     saveLastSearch() {
+      // if there is no error message and there is a searched term
       if(!this.displayMessage && this.searchTerm) {
+
+        // dispatch an action to save the gif search
         const searchTerm = this.searchTerm;
         this.$store.dispatch({ type: "saveGifSearch", searchTerm });
       }
