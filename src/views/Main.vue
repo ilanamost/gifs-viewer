@@ -19,7 +19,7 @@
       </button>
 
       <p class="page-number" v-if="gifsOffset >= 0 && gifsTotalCount > 0">
-        Page Number: {{ Number(gifsOffset) }} / {{ Number(gifsTotalCount) - 1 }}
+        Page Number: {{ Number(pageNumber) }} / {{ Number(totalPages) }}
       </p>
 
       <div class="buttons-container flex space-between">
@@ -38,12 +38,24 @@
           class="btn btn-sucess"
           :disabled="
             gifsOffset === gifsTotalCount - 1 ||
+            pageNumber === totalPages ||
             gifsTotalCount === 0 ||
             disablePaginationButtons
           "
         >
           Next
         </button>
+
+        <!-- <button
+          type="button"
+          @click="fetchNextGifs"
+          class="btn btn-sucess"
+          :disabled="
+            gifsOffset === gifsTotalCount - 1 ||
+            gifsTotalCount === 0 ||
+            disablePaginationButtons">
+          Next
+        </button> -->
       </div>
     </div>
 
@@ -63,6 +75,7 @@ import {
   GIPHY_API_URL,
   LOADER_TIMEOUT,
   FIRST_PAGE_OFFSET,
+  FIRST_PAGE_NUMBER,
 } from "@/services/utilService.js";
 const axios = require("axios");
 
@@ -82,6 +95,8 @@ export default {
       displayMessage: false,
       isLoading: false,
       disablePaginationButtons: false,
+      pageNumber: FIRST_PAGE_NUMBER,
+      totalPages: 0,
     };
   },
   watch: {
@@ -90,6 +105,15 @@ export default {
       if (this.$route.params && this.$route.params.gifsOffset) {
         // save the gifs offset
         this.gifsOffset = Number(this.$route.params.gifsOffset);
+
+        // update the page number according to the gifs offset
+        this.updatePageNumber();
+      }
+
+      // if the route has a tital pages parameter
+      if (this.$route.params && this.$route.params.totalPages) {
+        // save the total pages
+        this.totalPages = this.$route.params.totalPages;
       }
 
       this.fetchGifsForSearchTerm();
@@ -109,17 +133,26 @@ export default {
         this.fetchGifs();
       }
     },
-    changePage(gifsOffset = FIRST_PAGE_OFFSET) {
+    changePage(gifsOffset = FIRST_PAGE_OFFSET, pageNumber = FIRST_PAGE_NUMBER, totalPages = 0) {
+      // update the page number value
+      this.pageNumber = pageNumber;
+
       // change the route to have the current gifsOffset and searchTerm as parameters
       this.$router.push({
         name: "main",
-        params: { searchedItem: this.searchTerm, gifsOffset: gifsOffset },
+        params: {
+          searchedItem: this.searchTerm,
+          gifsOffset: gifsOffset,
+          totalPages: totalPages,
+        },
       });
     },
     disableButtons() {
       this.disablePaginationButtons = true;
 
       if (!this.searchTerm) {
+        this.resetData();
+
         // reset the parameters in the current route
         this.$router.push({
           name: "main",
@@ -130,22 +163,36 @@ export default {
     closeModal() {
       this.displayMessage = false;
     },
+    updateOffset() {
+      // update the gifs offset according to the page number
+      this.gifsOffset = (this.pageNumber - 1) * MAX_LENGTH + 1;
+    },
+    updatePageNumber() {
+      // update the page number according to the gifs offset
+      this.pageNumber = (this.gifsOffset - 1) / MAX_LENGTH + 1;
+    },
     fetchPrevGifs() {
-      if (this.gifsOffset > 0) {
-        // decrement the gifs offset until 0
-        this.gifsOffset--;
+      if (this.pageNumber > FIRST_PAGE_NUMBER) {
+        // decrement the page number down to 1
+        this.pageNumber--;
+
+        // update the gifs offset according to the page number
+        this.updateOffset();
 
         // change the route to have the current gifsOffset and searchTerm as parameters
-        this.changePage(this.gifsOffset);
+        this.changePage(this.gifsOffset, this.pageNumber, this.totalPages);
       }
     },
     fetchNextGifs() {
-      if (this.gifsOffset < this.gifsTotalCount) {
-        // increment the gifs offset until the gifs total count
-        this.gifsOffset++;
+      if (this.pageNumber < this.totalPages) {
+        // increment the page number up to the total pages number
+        this.pageNumber++;
+
+        // update the gifs offset according to the page number
+        this.updateOffset();
 
         // change the route to have the current gifsOffset and searchTerm as parameters
-        this.changePage(this.gifsOffset);
+        this.changePage(this.gifsOffset, this.pageNumber, this.totalPages);
       }
     },
     async fetchGifs() {
@@ -176,6 +223,18 @@ export default {
           response.data.pagination.total_count
             ? response.data.pagination.total_count
             : 0;
+
+        // calculate the number of the total pages
+        this.totalPages = Math.ceil(this.gifsTotalCount / MAX_LENGTH);
+
+        this.$router.push({
+          name: "main",
+          params: {
+            searchedItem: this.searchTerm,
+            gifsOffset: this.gifsOffset,
+            totalPages: this.totalPages,
+          },
+        });
 
         // map the gifs data to an array of the gifs sources
         this.buildGifs(response.data);
@@ -227,6 +286,8 @@ export default {
       this.gifsTotalCount = 0;
       this.displayMessage = false;
       this.isLoading = false;
+      this.pageNumber = FIRST_PAGE_NUMBER;
+      this.totalPages = 0;
     },
     saveLastSearch() {
       // if there is no error message and there is a searched term
