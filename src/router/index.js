@@ -7,7 +7,7 @@ import UtilService from "@/services/utilService.js";
 
 const routes = [
   {
-    path: '/:searchedItem?/:gifsOffset?/:totalPages?',
+    path: '/:searchedItem?/:pageNumber?',
     name: "main",
     component: Main,
     props: true,

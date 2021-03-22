@@ -11,7 +11,7 @@ export const GIPHY_API_URL = "https://api.giphy.com/v1/gifs/";
 export const TOKEN_KEY = "token";
 export const EXPIRATION_KEY = "expiration";
 export const LOADER_TIMEOUT = 500;
-export const FIRST_PAGE_OFFSET = 1;
+export const FIRST_PAGE_OFFSET = 0;
 export const FIRST_PAGE_NUMBER = 1;
 
 /**

@@ -12,27 +12,33 @@
     </ul>
 
     <div v-if="lastUserSearches.length === 0" class="message">
-      <p> There are currently no search items to display </p>
+      <p>There are currently no search items to display</p>
     </div>
   </div>
 </template>
 
 <script>
-import { FIRST_PAGE_OFFSET } from "@/services/utilService.js";
+import {
+  FIRST_PAGE_OFFSET,
+  FIRST_PAGE_NUMBER,
+} from "@/services/utilService.js";
 export default {
   name: "HistoryGifs",
   methods: {
     navigateToMainPage(item) {
-      // navigate to the main page route with the search term as parameter
-      this.$router.replace({ name: "main", params: { searchedItem: item, gifsOffset: FIRST_PAGE_OFFSET } });
-    }
+      // navigate to the main page route with the search term and page number as parameters
+      this.$router.replace({
+        name: "main",
+        params: { searchedItem: item, pageNumber: FIRST_PAGE_NUMBER },
+      });
+    },
   },
   computed: {
     lastUserSearches() {
       // get the value of the recent user searches from the store
       return this.$store.getters.lastUserSearches;
-    }
-  }
+    },
+  },
 };
 </script>
 
