@@ -18,12 +18,13 @@
 </template>
 
 <script>
+import { FIRST_PAGE_OFFSET } from "@/services/utilService.js";
 export default {
   name: "HistoryGifs",
   methods: {
     navigateToMainPage(item) {
       // navigate to the main page route with the search term as parameter
-      this.$router.replace({ name: "main", params: { searchedItem: item } });
+      this.$router.replace({ name: "main", params: { searchedItem: item, gifsOffset: FIRST_PAGE_OFFSET } });
     }
   },
   computed: {

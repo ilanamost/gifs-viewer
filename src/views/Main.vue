@@ -12,14 +12,14 @@
       <button
         type="button"
         class="btn search-btn"
-        @click="fetchGifs"
+        @click="changePage()"
         :disabled="!searchTerm || isLoading"
       >
         <span class="btn-text"> Go </span>
       </button>
 
       <p class="page-number" v-if="gifsOffset >= 0 && gifsTotalCount > 0">
-        Page Number: {{ gifsOffset + 1 }} / {{ gifsTotalCount }}
+        Page Number: {{ Number(gifsOffset) }} / {{ Number(gifsTotalCount) - 1 }}
       </p>
 
       <div class="buttons-container flex space-between">
@@ -27,7 +27,7 @@
           type="button"
           @click="fetchPrevGifs"
           class="btn"
-          :disabled="gifsOffset === 0 || disablePaginationButtons"
+          :disabled="gifsOffset === 1 || disablePaginationButtons"
         >
           Previous
         </button>
@@ -36,7 +36,11 @@
           type="button"
           @click="fetchNextGifs"
           class="btn btn-sucess"
-          :disabled="gifsOffset === gifsTotalCount - 1 || gifsTotalCount === 0 || disablePaginationButtons"
+          :disabled="
+            gifsOffset === gifsTotalCount - 1 ||
+            gifsTotalCount === 0 ||
+            disablePaginationButtons
+          "
         >
           Next
         </button>
@@ -58,6 +62,7 @@ import {
   MAX_LENGTH,
   GIPHY_API_URL,
   LOADER_TIMEOUT,
+  FIRST_PAGE_OFFSET,
 } from "@/services/utilService.js";
 const axios = require("axios");
 
@@ -72,29 +77,55 @@ export default {
     return {
       gifs: [],
       searchTerm: "",
-      gifsOffset: 0,
+      gifsOffset: FIRST_PAGE_OFFSET,
       gifsTotalCount: 0,
       displayMessage: false,
       isLoading: false,
-      disablePaginationButtons: false
+      disablePaginationButtons: false,
     };
   },
+  watch: {
+    $route(to, from) {
+      // if the route has a gifs offset parameter
+      if (this.$route.params && this.$route.params.gifsOffset) {
+        // save the gifs offset
+        this.gifsOffset = Number(this.$route.params.gifsOffset);
+      }
+
+      this.fetchGifsForSearchTerm();
+    },
+  },
   created() {
-    // if the route has a search term parameter
-    if (this.$route.params && this.$route.params.searchedItem) {
-      // save the search term
-      this.searchTerm = this.$route.params.searchedItem;
-
-      // reset the search term parameter in the current route
-      this.$router.replace({ name: "main", params: { searchedItem: "" } });
-
-      // fetch gifs from the api
-      this.fetchGifs();
-    }
+    this.fetchGifsForSearchTerm();
   },
   methods: {
+    fetchGifsForSearchTerm() {
+      // if the route has a search term parameter
+      if (this.$route.params && this.$route.params.searchedItem) {
+        // save the search term
+        this.searchTerm = this.$route.params.searchedItem;
+
+        // fetch gifs from the api
+        this.fetchGifs();
+      }
+    },
+    changePage(gifsOffset = FIRST_PAGE_OFFSET) {
+      // change the route to have the current gifsOffset and searchTerm as parameters
+      this.$router.push({
+        name: "main",
+        params: { searchedItem: this.searchTerm, gifsOffset: gifsOffset },
+      });
+    },
     disableButtons() {
       this.disablePaginationButtons = true;
+
+      if (!this.searchTerm) {
+        // reset the parameters in the current route
+        this.$router.push({
+          name: "main",
+          params: { searchedItem: "", gifsOffset: "" },
+        });
+      }
     },
     closeModal() {
       this.displayMessage = false;
@@ -104,8 +135,8 @@ export default {
         // decrement the gifs offset until 0
         this.gifsOffset--;
 
-        // fetch gifs from the api
-        this.fetchGifs();
+        // change the route to have the current gifsOffset and searchTerm as parameters
+        this.changePage(this.gifsOffset);
       }
     },
     fetchNextGifs() {
@@ -113,8 +144,8 @@ export default {
         // increment the gifs offset until the gifs total count
         this.gifsOffset++;
 
-        // fetch gifs from the api
-        this.fetchGifs();
+        // change the route to have the current gifsOffset and searchTerm as parameters
+        this.changePage(this.gifsOffset);
       }
     },
     async fetchGifs() {
@@ -170,7 +201,7 @@ export default {
       if (
         json.data.length === 0 &&
         this.searchTerm &&
-        ((this.gifsOffset <= this.gifsTotalCount) || (!this.gifsTotalCount))
+        (this.gifsOffset <= this.gifsTotalCount || !this.gifsTotalCount)
       ) {
         // display error message
         this.displayMessage = true;
